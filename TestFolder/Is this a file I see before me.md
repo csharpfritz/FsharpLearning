@@ -1,2 +1,1 @@
-Yes. Yes it is!
-It still is
+Not any more.
