@@ -49,29 +49,36 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
         let dbContext = new GitHubData("fritzstreamdb")
 
         let! data = req.Content.ReadAsStringAsync() |> Async.AwaitTask
-        let webhook = PushWebHook.Parse(data)
+        let webhook = PushWebHook.Parse data
 
         let commitId = webhook.After
         let dateStamp = DateTime.UtcNow
         let repository = webhook.Repository.Name
-
-        let filteredCommits = webhook.Commits |> Seq.filter(fun c -> c.Committer.Username <> "web-flow") 
-
-        for commit in filteredCommits do
-          
-          let newRecord:Metric = {
-            Id = 0;
-            CommitId = commitId;
-            Repository = repository;
-            DateStamp = dateStamp;
-            Name = commit.Author.Username;
-            NumFilesChanged = commit.Added.Length + commit.Removed.Length + commit.Modified.Length;
-          }
-
-          dbContext.Metrics.Add newRecord |> ignore
+        
+        -- just to ugly inline - but need the type-annotation here
+        -- don't know exactly what the type-provider generates here
+        -- but the trick is to run this, see the error and then
+        -- input what the compiler tells you ;)
+        -- (sorry for me being to lazy do download your files)
+        let addCommit (commit : PleaseInsertTheTypeHere_DontSeeIt) =
+          let newRecord:Metric = 
+            {
+                Id = 0
+                CommitId = commitId
+                Repository = repository
+                DateStamp = dateStamp
+                Name = commit.Author.Username
+                NumFilesChanged = commit.Added.Length + commit.Removed.Length + commit.Modified.Length
+            }
+          dbContext.Metrics.Add newRecord
+        
+        webhook.Commits 
+        |> Seq.filter (fun c -> c.Committer.Username <> "web-flow") 
+        |> Seq.iter addCommit
           
         let! loaded = dbContext.SaveChangesAsync() |> Async.AwaitTask 
-        loaded |> printfn "Loaded %d records" 
+        printfn "Loaded %d records" loaded
+        
         return req.CreateResponse(HttpStatusCode.OK, "Handled Push Webhook from " + repository)
 
     } |> Async.RunSynchronously
