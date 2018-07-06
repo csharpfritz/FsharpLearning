@@ -43,10 +43,14 @@ type PushWebHook = JsonProvider<pushSample>
 
 let Run(req: HttpRequestMessage, log: TraceWriter) =
     async { 
-        log.Info(sprintf 
-            "Handling a GitHub WebHook") 
+        log.Info "Handling a GitHub WebHook"
 
-        let dbContext = new GitHubData("fritzstreamdb")
+        // if dbContext is `IDisposable` you should use `use` here
+        // this will dispose `dbContext` at the end of this block (like `using` in C#)
+        // if it's not `IDisposable` change to
+        // let dbContext = GitHubData "fritzstreamdb"
+        // - because in F# the convention is to only use `new` if it's `IDisposable`
+        use dbContext = new GitHubData("fritzstreamdb")
 
         let! data = req.Content.ReadAsStringAsync() |> Async.AwaitTask
         let webhook = PushWebHook.Parse data
