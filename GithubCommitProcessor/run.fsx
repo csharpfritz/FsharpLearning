@@ -55,13 +55,13 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
         let dateStamp = DateTime.UtcNow
         let repository = webhook.Repository.Name
         
-        -- just to ugly inline - but need the type-annotation here
-        -- don't know exactly what the type-provider generates here
-        -- but the trick is to run this, see the error and then
-        -- input what the compiler tells you ;)
-        -- (sorry for me being to lazy do download your files)
+        // code would be too ugly inline - but need the type-annotation here
+        // don't know exactly what the type-provider generates here
+        // but the trick is to run this, see the error and then
+        // input what the compiler tells you ;)
+        // (sorry for me being to lazy do download your files)
         let addCommit (commit : PleaseInsertTheTypeHere_DontSeeIt) =
-          let newRecord:Metric = 
+          let newRecord : Metric = 
             {
                 Id = 0
                 CommitId = commitId
