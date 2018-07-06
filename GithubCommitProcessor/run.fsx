@@ -61,7 +61,7 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
         // input what the compiler tells you ;)
         // (sorry for me being to lazy do download your files)
         let addCommit (commit : PleaseInsertTheTypeHere_DontSeeIt) =
-          let newRecord : Metric = 
+          let newRecord = 
             {
                 Id = 0
                 CommitId = commitId
