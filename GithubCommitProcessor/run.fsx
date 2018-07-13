@@ -59,26 +59,20 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
         let dateStamp = DateTime.UtcNow
         let repository = webhook.Repository.Name
         
-        // code would be too ugly inline - but need the type-annotation here
-        // don't know exactly what the type-provider generates here
-        // but the trick is to run this, see the error and then
-        // input what the compiler tells you ;)
-        // (sorry for me being to lazy do download your files)
-        let addCommit (commit : PleaseInsertTheTypeHere_DontSeeIt) =
-          let newRecord = 
-            {
-                Id = 0
-                CommitId = commitId
-                Repository = repository
-                DateStamp = dateStamp
-                Name = commit.Author.Username
-                NumFilesChanged = commit.Added.Length + commit.Removed.Length + commit.Modified.Length
-            }
-          dbContext.Metrics.Add newRecord
-        
         webhook.Commits 
         |> Seq.filter (fun c -> c.Committer.Username <> "web-flow") 
-        |> Seq.iter addCommit
+        |> Seq.iter (fun commit ->
+                      let newRecord = 
+                        {
+                            Id = 0
+                            CommitId = commitId
+                            Repository = repository
+                            DateStamp = dateStamp
+                            Name = commit.Author.Username
+                            NumFilesChanged = commit.Added.Length + commit.Removed.Length + commit.Modified.Length
+                        }
+                      dbContext.Metrics.Add newRecord |> ignore)
+        
           
         let! loaded = dbContext.SaveChangesAsync() |> Async.AwaitTask 
         printfn "Loaded %d records" loaded
