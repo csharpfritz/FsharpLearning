@@ -1,0 +1,70 @@
+Hi Jeff!
+
+I had mentioned working with F# for fun and profit instead of the tutorials you were using.
+
+It is my opinion that you are being ill-served by whomever told you it wasn't a good site.  You don't know me so I don't expect
+you to take my word. I hope this doesn't get too long - I'll try to briefly make my case.
+
+I've written in over 20 languages/templates (and created my own DSLs), all of which I taught myself, F# being my first
+functional language.  I mention that to emphasize that I know what it takes to learn a new language and in hopes that you
+believe me when I say: Approaching learning F# the way you approach learning OOP/Imperative languages is misguided.
+
+I've watched your previous F# Fridays videos and it is my opinion that you are missing some important and fundamental concepts
+that will change your understanding and effectiveness with coding in F#.  If you are writing code the same as you would with C#,
+you are missing the point and will not get why people love F#.  My fear is this is going to affect your viewers as well and
+turn them off from F#.
+
+I won't presume to be able to convince you.  Instead, I will try to have you convince yourself.
+
+Here is a highlight of things I think you haven't fully explored/understood (based on watching your videos):
+
+  1. All F# functions are one parameter functions!
+  2. Model your domain in the type system before you start writing any code (make it impossible to write incorrect code)
+  3. Discriminated unions
+
+Options
+  * Go to https://fsharpforfunandprofit.com/posts/thinking-functionally-intro/ and read the first 6 sections (To Partial Application).
+  * Watch https://www.youtube.com/watch?v=KPa8Yw_Navk (It's from the author of the above site)
+
+If you are not convinced then I concede.  I absolutely do love F# and am frustrated that I don't have the time to write
+code in it right now.  It's the first language to really excite me since C# and Ruby.
+
+Hope this helps,
+Wil
+
+PS.
+
+Here is my explanation of the Option Discriminated Union and DUs in general:
+
+Given:
+
+type Option<'a> =
+  | Some of 'a
+  | None
+
+This means:
+  * Represent one of two type/class/struct (however you want to imagine it - I'll use class) instance
+      ** It can be an instance of a class named Some that has a single property (of generic type 'a with no name)
+      ** It can be an instance of a class named None that has no properties
+  * Anything after the class name is considered a property as well as a constructor argument
+
+So, given the function:
+
+let check condition =
+  if condition then Some "hello" else None
+  
+What this means is:
+  * If the condition is true, we call the constructor of the Some class passing "hello" as the constructor argument
+  * If the condition is false, we call the constructor of the None class that doesn't have any arguments
+  * We are returning either an instance of the Some class or the None class
+
+If we want to use this function:
+
+let test condition = match (check condition) with
+| Some value -> printfn "%s" value
+| None -> ()
+
+What this means is:
+  * Call the check method with condition
+  * If an instance of the Some class is returned, deconstruct the property into a variable named "value", print it
+  * if an instance of the None class is returned, do nothing (no properties to deconstruct)
