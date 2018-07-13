@@ -71,7 +71,7 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
                             Name = commit.Author.Username
                             NumFilesChanged = commit.Added.Length + commit.Removed.Length + commit.Modified.Length
                         }
-                      dbContext.Metrics.Add newRecord)
+                      dbContext.Metrics.Add newRecord |> ignore)
         
           
         let! loaded = dbContext.SaveChangesAsync() |> Async.AwaitTask 
