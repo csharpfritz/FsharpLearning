@@ -1,0 +1,10 @@
+{
+  "frameworks": {
+    "net46":{
+      "dependencies": {
+        "EntityFramework": "6.2.0",
+        "FSharp.Data": "3.0.0-beta4"
+      }
+    }
+  }
+}
