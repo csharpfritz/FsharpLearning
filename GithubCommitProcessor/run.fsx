@@ -1,10 +1,40 @@
+#if !COMPILED
+
+// You'll need to uncomment one of the following lines based on
+// how you installed the Core Tools (i.e. with npm or Chocolatey)
+
+#I @"C:/Users/smabr/AppData/Roaming/npm/node_modules/azure-functions-core-tools/bin/"
+// #I @"C:/ProgramData/chocolatey/lib/azure-functions-core-tools/tools/"
+
+#r "Microsoft.Azure.Webjobs.Host.dll"
+open Microsoft.Azure.WebJobs.Host
+
+#r "System.Net.Http.Formatting.dll"
+#r "System.Web.Http.dll"
+#r "System.Net.Http.dll"
+#r "System.Data.dll"
+#r "System.Configuration.dll"
+#r "System.ComponentModel.DataAnnotations.dll"
+#r "Newtonsoft.Json.dll"
+
+#I @"c:/users/smabr/data/Functions/packages/nuget/entityframework/6.2.0/lib/net45/"
+#I @"c:/users/smabr/data/Functions/packages/nuget/fsharp.data/3.0.0-beta3/lib/net45/"
+
+#else
+
 #r "System.Net.Http"
 #r "Newtonsoft.Json"
 #r "System.Data"
-#r "EntityFramework.dll"
 #r "System.Configuration"
+#r "System.ComponentModel.DataAnnotations"
 
-// #load "data.fsx"
+#I @"D:/home/data/Functions/packages/nuget/entityframework/6.2.0/lib/net45/"
+#I @"D:/home/data/Functions/packages/nuget/fsharp.data/3.0.0-beta3/lib/net45/"
+
+#endif
+
+#r "EntityFramework.dll"
+#r "FSharp.Data.dll"
 
 open System.Net
 open System.Net.Http
