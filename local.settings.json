@@ -1,0 +1,16 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_EXTENSION_VERSION": "latest",
+        "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0"
+    },
+    "Host": {
+        "LocalHttpPort": 7071,
+        "CORS": "*"
+    },
+    "ConnectionStrings": {
+        "fritzstreamdb": "Server=(localdb)\\mssqllocaldb;Database=FritzStreamDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+    }
+}
